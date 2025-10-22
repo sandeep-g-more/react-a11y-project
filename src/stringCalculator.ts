@@ -1,23 +1,13 @@
-// src/stringCalculator.ts
-export default function calculateFromString(input: string): number {
-  if (!input) return 0;
-  // replace newlines with commas, split, trim, filter empty, parse floats
-  const tokens = input
-    .replace(/\r\n/g, '\n')
-    .replace(/\n/g, ',')
-    .split(',')
-    .map(t => t.trim())
-    .filter(Boolean);
+export const stringCalculator = (input: string): number => {
+  if (!input.trim()) return 0;
 
-  const numbers = tokens.map(t => {
-    // allow integers & floats; throw if not a valid number
-    const n = Number(t);
-    if (Number.isNaN(n)) {
-      throw new Error(`Invalid number: "${t}"`);
-    }
-    return n;
+  const parts = input.split(/[\s,]+/);
+
+  const numbers = parts.map((p) => {
+    const num = Number(p);
+    if (isNaN(num)) throw new Error(`Invalid number: "${p}"`);
+    return num;
   });
 
-  // example behavior: sum numbers
-  return numbers.reduce((s, n) => s + n, 0);
-}
+  return numbers.reduce((sum, n) => sum + n, 0);
+};
