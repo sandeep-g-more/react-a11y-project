@@ -1,6 +1,7 @@
 // src/App.tsx
 import { useState, useRef, useEffect } from 'react';
-import stringCalculator from './stringCalculator';
+import { stringCalculator } from './stringCalculator';
+
 
 const App = () => {
   const [input, setInput] = useState('');

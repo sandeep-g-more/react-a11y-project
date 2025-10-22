@@ -3,7 +3,7 @@ import { createDefaultPreset } from 'ts-jest';
 /** @type {import('jest').Config} */
 export default {
   preset: 'ts-jest',
-  testEnvironment: 'jsdom', // needed for React components
+  testEnvironment: 'jest-environment-jsdom', // needed for React components
   transform: {
     ...createDefaultPreset().transform,
   },
