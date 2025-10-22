@@ -17,18 +17,17 @@ describe('App Accessibility', () => {
   test('error message is announced to screen readers', async () => {
     render(<App />);
 
-    // Select textarea using role + accessible name
+   // use getByRole with accessible name to avoid duplicate elements error
     const textarea = screen.getByRole('textbox', {
       name: /Numbers \(comma, space, or newline separated\)/i,
     });
 
     const calculateBtn = screen.getByRole('button', { name: /Calculate/i });
 
-    // Enter invalid input and calculate
     fireEvent.change(textarea, { target: { value: '1,a,2' } });
     fireEvent.click(calculateBtn);
 
-    // Error should appear and be announced
+    // Use role="alert" for accessibility messages
     const alert = await screen.findByRole('alert');
     expect(alert).toBeVisible();
     expect(alert).toHaveTextContent(/Invalid/i);
@@ -37,6 +36,7 @@ describe('App Accessibility', () => {
   test('result is displayed after valid input', async () => {
     render(<App />);
 
+    //  use getByRole instead of getByLabelText to avoid multiple matches error
     const textarea = screen.getByRole('textbox', {
       name: /Numbers \(comma, space, or newline separated\)/i,
     });
@@ -47,7 +47,9 @@ describe('App Accessibility', () => {
 
     const result = await screen.findByText(/Result:/i);
     expect(result).toBeVisible();
-    expect(result).toHaveTextContent('6');
+
+    //  Use exact string instead of regex with word boundary, matches actual content
+    expect(result).toHaveTextContent('Result: 6');
   });
 
   test('clear button resets input, result, and error', async () => {
@@ -61,17 +63,12 @@ describe('App Accessibility', () => {
     fireEvent.change(textarea, { target: { value: '1,2,3' } });
     fireEvent.click(calculateBtn);
 
-    // Verify result exists
     expect(await screen.findByText(/Result:/i)).toBeVisible();
 
-    // Clear everything
     fireEvent.click(clearBtn);
 
-    // Result and error should not be present
     expect(screen.queryByText(/Result:/i)).toBeNull();
     expect(screen.queryByRole('alert')).toBeNull();
-
-    // Textarea should be empty
     expect(textarea).toHaveValue('');
   });
 

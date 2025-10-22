@@ -111,30 +111,14 @@ const App = () => {
         </section>
 
         <section aria-live="polite" style={{ marginTop: 16 }}>
-          {error && (
-            <div
-              role="alert"
-              ref={errorRef}
-              tabIndex={-1}
-              style={{ color: '#b00020' }}
-            >
-              {error}
-            </div>
-          )}
+          {/* Show error if any */}
+          {error && <div role="alert" style={{ color: 'red' }}>{error}</div>}
 
-          {result !== null && !error && (
-            <div
-              ref={resultRef}
-              tabIndex={-1}
-              aria-atomic="true"
-              style={{ color: '#0b6623' }}
-            >
-              <strong>Result:</strong> {result}
+          {/* Show result only if it exists */}
+          {result !== null && (
+            <div>
+              Result: {result}
             </div>
-          )}
-
-          {result === null && !error && (
-            <p style={{ color: '#666' }}>No result yet.</p>
           )}
         </section>
       </main>
