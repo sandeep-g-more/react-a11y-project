@@ -1,42 +1,24 @@
 // src/App.tsx
 import { useState } from 'react';
 
-
+import calculateFromString from './stringCalculator';
 const App = () => {
   const [input, setInput] = useState('');
   const [result, setResult] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+
   const handleCalculate = () => {
     try {
       setError(null);
-
-      // parse numbers separated by commas or new lines, ignore empty entries
-      const parts = input.split(/[,\\n]+/).map(p => p.trim()).filter(Boolean);
-
-      if (parts.length === 0) {
-        // no numbers provided
-        setResult(null);
-        return;
-      }
-
-      // convert to numbers and validate
-      const numbers = parts.map((p) => {
-        const n = Number(p);
-        if (Number.isNaN(n)) {
-          throw new Error(`Invalid number: "${p}"`);
-        }
-        return n;
-      });
-
-      // compute sum (or replace with any other aggregation)
-      const total = numbers.reduce((acc, cur) => acc + cur, 0);
-      setResult(total);
+      const value = calculateFromString(input);
+      setResult(value);
     } catch (e: any) {
       setResult(null);
       setError(e?.message || 'Invalid input');
     }
   };
+
 
   return (
     <div style={{ padding: 20, backgroundColor: '#ffffff', color: '#222' }}>
